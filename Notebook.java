@@ -1,15 +1,15 @@
 public class Notebook {
 
-    int serialNumber;
-    int screenSize;
-    String CPU;
-    double CPUfrequencies;
-    int drive;
-    String brand;
-    int RAM;
-    String operatingSystem;
-    String color;
-    int price;
+    int serialNumber;       // серийный номер ноута
+    int screenSize;         // размер ноута
+    String CPU;             // процессор
+    double CPUfrequencies;  // тактовая частота процессора
+    int drive;              // размер жёсткого диска, ГБ
+    String brand;           // фирма
+    int RAM;                // объём оперативки, ГБ
+    String operatingSystem; // операционка
+    String color;           // цвет
+    int price;              // цена
 
     @Override
     public boolean equals(Object obj) {
