@@ -10,10 +10,15 @@ public class TotalProject {
     static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+        
+        // создаю БД ноутов
         Set<Notebook>BD = createBD();
+        
+        // вывожу все на экран (чтоб можно было управлять параметрами при отборе)
         printResult(BD);
         System.out.println();
+        
+        // реализую выборку по заданным критериям и вывожу результат на экран
         Set<Notebook> result = implementationFilter(createFilter(),BD);
         if (result.isEmpty())
             System.out.println("There is nothing of your choice");
@@ -27,40 +32,43 @@ public class TotalProject {
         }    
     }
 
+    // метод создания создания БД ноутбуков
     static Set<Notebook> createBD()
     {
         String[] CPUList = {"Celeron", "Pentium", "Core i3", "Core i5", "A6", "A8", "A10", "Core i5"};
         String[] brandList = {"HP", "Acer", "Xiaomi", "Dell", "Lenovo", "Asus", "Apple"};
         String[] systemList = {"Windows", "MacOS", "Linux"};
         String[] colorList = {"silver", "black", "white", "blue", "red"};
-        int[] driveList = {64, 128, 256, 512, 1024, 2048, 4096}; // GByte
-        int[] RAMList = {4, 8, 12, 16, 32};                     // GByte
+        int[] driveList = {64, 128, 256, 512, 1024, 2048, 4096};    // GByte
+        int[] RAMList = {4, 8, 12, 16, 32};                         // GByte
         
         Set<Notebook> laptops = new HashSet<>();
         for(int i = 0; i < 20; i++)
         {
             Notebook notebook = new Notebook();
-            notebook.serialNumber = (int)(Math.random()*(1000000 - 100000)) + 100000;
-            notebook.screenSize = (int)(Math.random()*(20-10)) + 10;
-            notebook.CPU = CPUList[(int)(Math.random()*CPUList.length)];
-            notebook.CPUfrequencies = Math.round(Math.random()*(4.1-1.6) * 10) / 10.0;
+            notebook.serialNumber = (int)(Math.random()*(1000000 - 100000)) + 100000;   // серийник - лучайное шестизначное число
+            notebook.screenSize = (int)(Math.random()*(20-10)) + 10;                    // размер - от 10" до 19"
+            notebook.CPU = CPUList[(int)(Math.random()*CPUList.length)];                
+            notebook.CPUfrequencies = Math.round(Math.random()*(4.1-1.6) * 10) / 10.0;  // тактовая частота - от 10.0 до 4.0 ГГц
             notebook.drive = driveList[(int)(Math.random()*driveList.length)];
             notebook.brand = brandList[(int)(Math.random()*brandList.length)];
             notebook.RAM = RAMList[(int)(Math.random()*RAMList.length)];
             notebook.operatingSystem = systemList[(int)(Math.random()*systemList.length)];
             notebook.color = colorList[(int)(Math.random()*colorList.length)];
-            notebook.price = (int)(Math.random()*(99999-20999)) + 20999;
+            notebook.price = (int)(Math.random()*(99999-20999)) + 20999;                // цена - случайное число от 20999 до 99998 руб.
             laptops.add(notebook);
         }
         return laptops;
     }
-
+    
+    // метод вывода характиристик каждой модели в отдельной строке
     static void printResult(Set<Notebook> laptops)
     {
         for (Notebook item: laptops) 
             System.out.println(item);
     }
 
+    // метод создания запроса
     static Map<Integer, Set<Integer>> createFilter()
     {
         Map<Integer, Set<Integer>> map = new HashMap<>();
@@ -170,6 +178,7 @@ public class TotalProject {
         return map;
     }
 
+    // метод отбора моделей из БД ноутов по указанным критериям
     static Set<Notebook> implementationFilter(Map<Integer, Set<Integer>> map, Set<Notebook> laptops)
     {
         if (map == null)
@@ -249,10 +258,10 @@ public class TotalProject {
         for (Notebook item: laptops) 
         {
             boolean fullCompliance = (minSize == -1 || item.screenSize >= minSize) && 
-                                  (minRam == -1 || item.RAM >= minRam) &&
-                                  (minDrive == -1 || item.drive >= minDrive) &&
-                                  (os.isEmpty() || os.contains(item.operatingSystem)) &&
-                                  (clr.isEmpty() || clr.contains(item.color));
+                                     (minRam == -1 || item.RAM >= minRam) &&
+                                     (minDrive == -1 || item.drive >= minDrive) &&
+                                     (os.isEmpty() || os.contains(item.operatingSystem)) &&
+                                     (clr.isEmpty() || clr.contains(item.color));
             if (fullCompliance) query.add(item);
         }
         return query;
